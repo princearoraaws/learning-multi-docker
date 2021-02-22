@@ -1,22 +1,27 @@
 services:
   - docker
 
-before_script:
-  - docker build -t princearoraaws/react-test -f ./client/Dockerfile.dev ./client
+build:
+    before_script:
+    - docker build -t princearoraaws/react-test -f ./client/Dockerfile.dev ./client
 
-script:
-  - docker run princearoraaws/react-test npm test -- --coverage
+    script:
+    - docker run princearoraaws/react-test npm test -- --coverage
 
-after_script:
-  - docker build -t princearoraaws/multi-client ./client
-  - docker build -t princearoraaws/multi-nginx ./nginx
-  - docker build -t princearoraaws/multi-server ./server
-  - docker build -t princearoraaws/multi-worker ./worker
+    after_script:
+    - docker build -t princearoraaws/multi-client ./client
+    - docker build -t princearoraaws/multi-nginx ./nginx
+    - docker build -t princearoraaws/multi-server ./server
+    - docker build -t princearoraaws/multi-worker ./worker
 
-  # Login to Docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take the images and push to docker hub
+    # Login to Docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Take the images and push to docker hub
+    - docker push princearoraaws/multi-client
+    - docker push princearoraaws/multi-nginx
+    - docker push princearoraaws/multi-server
+    - docker push princearoraaws/multi-worker
 
 
-tags:
-  - docker
+    tags:
+    - docker

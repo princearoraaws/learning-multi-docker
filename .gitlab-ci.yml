@@ -1,5 +1,10 @@
+image: docker:stable
+
 services:
-  - docker
+  - docker:stable-dind
+
+variables:
+  CI_DEBUG_TRACE: "true"
 
 build:
     before_script:

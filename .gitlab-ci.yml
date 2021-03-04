@@ -6,14 +6,17 @@ services:
 variables:
   CI_DEBUG_TRACE: "false"
 
+
 build:
     before_script:
     - docker build -t princearoraaws/react-test -f ./client/Dockerfile.dev ./client
 
-    script:
-    - docker run -e CI=true princearoraaws/react-test npm test
+    #script:
+    #- docker run -e CI=true princearoraaws/react-test npm test
 
-    after_script:
+    #after_script:
+    script:
+
     - docker build -t princearoraaws/multi-client ./client
     - docker build -t princearoraaws/multi-nginx ./nginx
     - docker build -t princearoraaws/multi-server ./server
@@ -21,6 +24,7 @@ build:
 
     # Login to Docker CLI
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
     # Take the images and push to docker hub
     - docker push princearoraaws/multi-client
     - docker push princearoraaws/multi-nginx
